@@ -11,18 +11,27 @@ How to use it
 
 1. Install Ansible
 
+    ```bash
     apt-get install python-pip python-paramiko python-yaml python-jinja2 python-simplejson git-core
     git clone git://github.com/ansible/ansible.git
     source ./ansible/hacking/env-setup
+    ```
 
 2. Create an inventory or hosts file. See [Ansible's inventory documentation](http://www.ansibleworks.com/docs/intro_inventory.html).
 
+    ```bash
     echo "localhost" > ~/ansible_hosts
     export ANSIBLE_HOSTS=~/ansible_hosts
+    ```
 
-3. Run the playbook
+3. Run the playbook locally
 
-    # Running locally without a hosts inventory
+    ```bash
     ansible-playbook -c local site.yml
-    # or using an iventory file
+    ```
+
+4. Or run the playbook using a hosts inventory
+
+    ```bash
     ansible-playbook -i hosts site.yml
+    ```
