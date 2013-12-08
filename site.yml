@@ -1,0 +1,9 @@
+---
+# This playbook will apply the duo-security role
+
+- name: Apply duo role
+  hosts: all
+  user: root
+
+  roles:
+    - duo_security

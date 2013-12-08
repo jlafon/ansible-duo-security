@@ -1,0 +1,17 @@
+---
+- name: Add Duo Key
+  apt_key: url=http://pkg.duosecurity.com/APT-GPG-KEY-DUO state=present
+
+- name: Add Duo Source
+  copy: src=duosecurity.list dest=/etc/apt/sources.list.d/duosecurity.list
+
+- name: Install Duo Unix SSH Integration
+  apt: name=duo-unix state=installed update_cache=yes
+
+- name: Install Duo config
+  template: src=login_duo.conf.j2 dest=/etc/duo/login_duo.conf owner=sshd group=0 mode=0600
+
+- name: Enable duo security for remote logins
+  lineinfile: dest=/etc/ssh/sshd_config regexp=^ForceCommand line="ForceCommand /usr/sbin/login_duo"
+  notify:
+  - restart sshd
