@@ -15,3 +15,15 @@
   lineinfile: dest=/etc/ssh/sshd_config regexp=^ForceCommand line="ForceCommand /usr/sbin/login_duo"
   notify:
   - restart sshd
+
+- name: Disable PermitTunnel and AllowTcpForwarding
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    state=present
+    regexp=^{{ item.key }}
+    line="{{ item.key }} {{ item.value }}"
+    insertafter=EOF
+  with_items:
+    - { key: 'PermitTunnel', value: 'no' }
+    - { key: 'AllowTcpForwarding', value: 'no' }
+  notify: restart sshd
