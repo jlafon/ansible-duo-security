@@ -1,0 +1,29 @@
+#! /bin/bash
+
+# This script prompts users logging in over SSH for DUO MFA, only if:
+#   - The user is not already logged in from the same IP
+#   - The user hasn't logged in in the last 30 minutes from the same IP
+
+# Enable it by adding this line to sshd_config:
+# ForceCommand login_duo_session
+
+# The script must be executable by the user logging in
+# login_duo needs to be installed, see https://duo.com/docs/loginduo
+
+
+CLIENT_IP=$(echo $SSH_CLIENT | awk '{print $1}')
+if who | grep $CLIENT_IP > /dev/null 2>&1; then
+    echo "User already authenticated"
+elif last $USER --since -30min | grep $CLIENT_IP > /dev/null 2>&1; then
+    echo "User recently authenticated"
+else
+    /usr/sbin/login_duo
+fi
+
+# run shell
+if [[ -z $SSH_ORIGINAL_COMMAND ]]
+then
+    exec $SHELL -il
+else
+    exec $SHELL -c "$SSH_ORIGINAL_COMMAND"
+fi

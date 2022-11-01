@@ -1,10 +1,13 @@
 ansible-duo-security
 ====================
 
-An Ansible playbook for installing [Duo Security Unix SSH Integration](https://www.duosecurity.com/unix) for easy
-multifactor authentication for SSH logins on Ubuntu.
+An Ansible playbook for installing [Duo Unix Two-Factor Authentication for SSH (login_duo)](https://duo.com/docs/loginduo) for easy
+multifactor authentication for SSH logins.
 
-This playbook requires [Ansible](http://ansibleworks.com/) 1.4+, and has only been tested with Ubuntu 12.04 LTS.
+This playbook requires [Ansible](https://docs.ansible.com), and has only been tested with Ubuntu 22.04.
+
+This fork includes a patch which adds sessions to to the authentication, which skips MFA when the user has alredy been authorized in the last 30 minutes.
+
 
 How to use it
 -------------

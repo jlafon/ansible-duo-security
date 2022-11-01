@@ -11,8 +11,11 @@
 - name: Install Duo config
   template: src=login_duo.conf.j2 dest=/etc/duo/login_duo.conf owner=sshd group=0 mode=0600
 
+- name: Install Login Script
+  copy: src=login_duo_session dest=/usr/sbin/login_duo_session mode=a+x
+
 - name: Enable duo security for remote logins
-  lineinfile: dest=/etc/ssh/sshd_config regexp=^ForceCommand line="ForceCommand /usr/sbin/login_duo"
+  lineinfile: dest=/etc/ssh/sshd_config regexp=^ForceCommand line="ForceCommand /usr/sbin/login_duo_session"
   notify:
   - restart sshd
 
